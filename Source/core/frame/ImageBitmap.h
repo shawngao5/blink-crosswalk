@@ -7,7 +7,9 @@
 
 #include "bindings/core/v8/ScriptWrappable.h"
 #include "core/html/HTMLImageElement.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/canvas/CanvasImageSource.h"
+#endif
 #include "platform/geometry/IntRect.h"
 #include "platform/graphics/Image.h"
 #include "platform/heap/Handle.h"
@@ -26,7 +28,9 @@ class ImageBitmap final : public RefCountedWillBeGarbageCollectedFinalized<Image
 public:
     static PassRefPtrWillBeRawPtr<ImageBitmap> create(HTMLImageElement*, const IntRect&);
     static PassRefPtrWillBeRawPtr<ImageBitmap> create(HTMLVideoElement*, const IntRect&);
+#if !defined(DISABLE_CANVAS)
     static PassRefPtrWillBeRawPtr<ImageBitmap> create(HTMLCanvasElement*, const IntRect&);
+#endif
     static PassRefPtrWillBeRawPtr<ImageBitmap> create(ImageData*, const IntRect&);
     static PassRefPtrWillBeRawPtr<ImageBitmap> create(ImageBitmap*, const IntRect&);
     static PassRefPtrWillBeRawPtr<ImageBitmap> create(Image*, const IntRect&);
@@ -53,7 +57,9 @@ public:
 private:
     ImageBitmap(HTMLImageElement*, const IntRect&);
     ImageBitmap(HTMLVideoElement*, const IntRect&);
+#if !defined(DISABLE_CANVAS)
     ImageBitmap(HTMLCanvasElement*, const IntRect&);
+#endif
     ImageBitmap(ImageData*, const IntRect&);
     ImageBitmap(ImageBitmap*, const IntRect&);
     ImageBitmap(Image*, const IntRect&);

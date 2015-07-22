@@ -45,7 +45,9 @@
 #include "core/inspector/InspectorAnimationAgent.h"
 #include "core/inspector/InspectorApplicationCacheAgent.h"
 #include "core/inspector/InspectorCSSAgent.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/inspector/InspectorCanvasAgent.h"
+#endif
 #include "core/inspector/InspectorDOMAgent.h"
 #include "core/inspector/InspectorDOMDebuggerAgent.h"
 #include "core/inspector/InspectorDebuggerAgent.h"
@@ -472,7 +474,9 @@ void WebDevToolsAgentImpl::initializeDeferredAgents()
 
     m_agents.append(InspectorHeapProfilerAgent::create(injectedScriptManager));
 
+#if !defined(DISABLE_CANVAS)
     m_agents.append(InspectorCanvasAgent::create(m_pageAgent, injectedScriptManager));
+#endif
 
     m_pageAgent->setDeferredAgents(debuggerAgent, m_cssAgent);
 
@@ -733,8 +737,10 @@ void WebDevToolsAgentImpl::didProcessTask()
         return;
     if (InspectorProfilerAgent* profilerAgent = m_instrumentingAgents->inspectorProfilerAgent())
         profilerAgent->didProcessTask();
+#if !defined(DISABLE_CANVAS)
     if (InspectorCanvasAgent* canvasAgent = m_instrumentingAgents->inspectorCanvasAgent())
         canvasAgent->didProcessTask();
+#endif
     TRACE_EVENT_END0(TRACE_DISABLED_BY_DEFAULT("devtools.timeline"), "Program");
     flushPendingProtocolNotifications();
 }

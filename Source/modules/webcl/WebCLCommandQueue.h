@@ -18,7 +18,9 @@ namespace blink {
 
 class DOMArrayBufferView;
 class ExceptionState;
+#if !defined(DISABLE_CANVAS)
 class HTMLCanvasElement;
+#endif
 class HTMLImageElement;
 class HTMLVideoElement;
 class ImageData;
@@ -42,28 +44,40 @@ public:
     ScriptValue getInfo(ScriptState*, int, ExceptionState&);
     void enqueueWriteBuffer(WebCLBuffer*, bool, unsigned, unsigned, DOMArrayBufferView*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
     void enqueueWriteBuffer(WebCLBuffer*, bool, unsigned, ImageData*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     void enqueueWriteBuffer(WebCLBuffer*, bool, unsigned, HTMLCanvasElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#endif
     void enqueueWriteBuffer(WebCLBuffer*, bool, unsigned, HTMLImageElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
 
     void enqueueWriteBufferRect(WebCLBuffer*, bool, const Vector<unsigned>&, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, unsigned, unsigned, unsigned, DOMArrayBufferView*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
     void enqueueWriteBufferRect(WebCLBuffer*, bool, const Vector<unsigned>&, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, unsigned, ImageData*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     void enqueueWriteBufferRect(WebCLBuffer*, bool, const Vector<unsigned>&, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, unsigned, HTMLCanvasElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#endif
     void enqueueWriteBufferRect(WebCLBuffer*, bool, const Vector<unsigned>&, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, unsigned, HTMLImageElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
 
     void enqueueReadBuffer(WebCLBuffer*, bool, unsigned, unsigned, DOMArrayBufferView*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     void enqueueReadBuffer(WebCLBuffer*, bool, unsigned, unsigned, HTMLCanvasElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#endif
 
     void enqueueReadBufferRect(WebCLBuffer*, bool, const Vector<unsigned>&, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, unsigned, unsigned, unsigned, DOMArrayBufferView*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     void enqueueReadBufferRect(WebCLBuffer*, bool, const Vector<unsigned>&, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, unsigned, HTMLCanvasElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#endif
 
     void enqueueReadImage(WebCLImage*, bool, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, DOMArrayBufferView*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     void enqueueReadImage(WebCLImage*, bool, const Vector<unsigned>&, const Vector<unsigned>&, HTMLCanvasElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#endif
 
     void enqueueNDRangeKernel(WebCLKernel*, unsigned, const Vector<double>&, const Vector<double>&, const Vector<double>&, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
 
     void enqueueWriteImage(WebCLImage*, bool, const Vector<unsigned>&, const Vector<unsigned>&, unsigned, DOMArrayBufferView*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
     void enqueueWriteImage(WebCLImage*, bool, const Vector<unsigned>&, const Vector<unsigned>&, ImageData*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     void enqueueWriteImage(WebCLImage*, bool, const Vector<unsigned>&, const Vector<unsigned>&, HTMLCanvasElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
+#endif
     void enqueueWriteImage(WebCLImage*, bool, const Vector<unsigned>&, const Vector<unsigned>&, HTMLImageElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
     void enqueueWriteImage(WebCLImage*, bool blockingWrite, HTMLVideoElement*, const Vector<RefPtr<WebCLEvent>>&, WebCLEvent*, ExceptionState&);
 

@@ -37,8 +37,8 @@
     [CallWith=ScriptState, RaisesException] Promise createImageBitmap(HTMLImageElement image, long sx, long sy, long sw, long sh);
     [CallWith=ScriptState, RaisesException] Promise createImageBitmap(HTMLVideoElement video);
     [CallWith=ScriptState, RaisesException] Promise createImageBitmap(HTMLVideoElement video, long sx, long sy, long sw, long sh);
-    [CallWith=ScriptState, RaisesException] Promise createImageBitmap(CanvasRenderingContext2D context);
-    [CallWith=ScriptState, RaisesException] Promise createImageBitmap(CanvasRenderingContext2D context, long sx, long sy, long sw, long sh);
-    [CallWith=ScriptState, RaisesException] Promise createImageBitmap(HTMLCanvasElement canvas);
-    [CallWith=ScriptState, RaisesException] Promise createImageBitmap(HTMLCanvasElement canvas, long sx, long sy, long sw, long sh);
+    // [CallWith=ScriptState, RaisesException] Promise createImageBitmap(CanvasRenderingContext2D context);
+    // [CallWith=ScriptState, RaisesException] Promise createImageBitmap(CanvasRenderingContext2D context, long sx, long sy, long sw, long sh);
+    // [CallWith=ScriptState, RaisesException] Promise createImageBitmap(HTMLCanvasElement canvas);
+    // [CallWith=ScriptState, RaisesException] Promise createImageBitmap(HTMLCanvasElement canvas, long sx, long sy, long sw, long sh);
 };

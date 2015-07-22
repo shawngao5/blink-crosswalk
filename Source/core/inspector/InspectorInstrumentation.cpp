@@ -136,8 +136,12 @@ void appendAsyncCallStack(ExecutionContext* executionContext, ScriptCallStack* c
 
 bool canvasAgentEnabled(ExecutionContext* executionContext)
 {
+#if !defined(DISABLE_CANVAS)
     InstrumentingAgents* instrumentingAgents = instrumentingAgentsFor(executionContext);
     return instrumentingAgents && instrumentingAgents->inspectorCanvasAgent();
+#else
+    return false;
+#endif
 }
 
 bool consoleAgentEnabled(ExecutionContext* executionContext)

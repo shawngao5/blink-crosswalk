@@ -26,7 +26,9 @@
 #include "config.h"
 #include "core/css/CSSImageGeneratorValue.h"
 
+#if !defined(DISABLE_CANVAS)
 #include "core/css/CSSCanvasValue.h"
+#endif
 #include "core/css/CSSCrossfadeValue.h"
 #include "core/css/CSSGradientValue.h"
 #include "platform/graphics/Image.h"
@@ -123,8 +125,10 @@ void CSSImageGeneratorValue::putImage(const IntSize& size, PassRefPtr<Image> ima
 PassRefPtr<Image> CSSImageGeneratorValue::image(LayoutObject* renderer, const IntSize& size)
 {
     switch (classType()) {
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         return toCSSCanvasValue(this)->image(renderer, size);
+#endif
     case CrossfadeClass:
         return toCSSCrossfadeValue(this)->image(renderer, size);
     case LinearGradientClass:
@@ -140,8 +144,10 @@ PassRefPtr<Image> CSSImageGeneratorValue::image(LayoutObject* renderer, const In
 bool CSSImageGeneratorValue::isFixedSize() const
 {
     switch (classType()) {
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         return toCSSCanvasValue(this)->isFixedSize();
+#endif
     case CrossfadeClass:
         return toCSSCrossfadeValue(this)->isFixedSize();
     case LinearGradientClass:
@@ -157,8 +163,10 @@ bool CSSImageGeneratorValue::isFixedSize() const
 IntSize CSSImageGeneratorValue::fixedSize(const LayoutObject* renderer)
 {
     switch (classType()) {
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         return toCSSCanvasValue(this)->fixedSize(renderer);
+#endif
     case CrossfadeClass:
         return toCSSCrossfadeValue(this)->fixedSize(renderer);
     case LinearGradientClass:
@@ -176,8 +184,10 @@ bool CSSImageGeneratorValue::isPending() const
     switch (classType()) {
     case CrossfadeClass:
         return toCSSCrossfadeValue(this)->isPending();
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         return toCSSCanvasValue(this)->isPending();
+#endif
     case LinearGradientClass:
         return toCSSLinearGradientValue(this)->isPending();
     case RadialGradientClass:
@@ -193,8 +203,10 @@ bool CSSImageGeneratorValue::knownToBeOpaque(const LayoutObject* renderer) const
     switch (classType()) {
     case CrossfadeClass:
         return toCSSCrossfadeValue(this)->knownToBeOpaque(renderer);
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         return false;
+#endif
     case LinearGradientClass:
         return toCSSLinearGradientValue(this)->knownToBeOpaque(renderer);
     case RadialGradientClass:
@@ -211,9 +223,11 @@ void CSSImageGeneratorValue::loadSubimages(Document* document)
     case CrossfadeClass:
         toCSSCrossfadeValue(this)->loadSubimages(document);
         break;
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         toCSSCanvasValue(this)->loadSubimages(document);
         break;
+#endif
     case LinearGradientClass:
         toCSSLinearGradientValue(this)->loadSubimages(document);
         break;

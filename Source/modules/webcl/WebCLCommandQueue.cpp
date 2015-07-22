@@ -11,7 +11,9 @@
 #include "core/dom/DOMArrayBuffer.h"
 #include "core/dom/DOMArrayBufferView.h"
 #include "core/dom/DOMTypedArray.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/ImageData.h"
 #include "modules/webcl/WebCL.h"
 #include "modules/webcl/WebCLBuffer.h"
@@ -270,6 +272,7 @@ void WebCLCommandQueue::enqueueWriteBuffer(WebCLBuffer* buffer, bool blockingWri
     enqueueWriteBufferBase(buffer, blockingWrite, offset, pixelSize, hostPtr, pixelSize, events, event, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 void WebCLCommandQueue::enqueueWriteBuffer(WebCLBuffer* buffer, bool blockingWrite, unsigned offset, HTMLCanvasElement* srcCanvas, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
     if (!isExtensionEnabled(context(), "WEBCL_html_image")) {
@@ -285,6 +288,7 @@ void WebCLCommandQueue::enqueueWriteBuffer(WebCLBuffer* buffer, bool blockingWri
     void* hostPtr = data.data();
     enqueueWriteBufferBase(buffer, blockingWrite, offset, canvasSize, hostPtr, canvasSize, events, event, es);
 }
+#endif
 
 void WebCLCommandQueue::enqueueWriteBuffer(WebCLBuffer* buffer, bool blockingWrite, unsigned offset, HTMLImageElement* srcImage, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
@@ -382,6 +386,7 @@ void WebCLCommandQueue::enqueueWriteBufferRect(WebCLBuffer* buffer, bool blockin
     enqueueWriteBufferRectBase(buffer, blockingWrite, bufferOrigin, hostOrigin, region, bufferRowPitch, bufferSlicePitch, 0, 0, hostPtr, pixelSize, events, event, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 void WebCLCommandQueue::enqueueWriteBufferRect(WebCLBuffer* buffer, bool blockingWrite, const Vector<unsigned>& bufferOrigin, const Vector<unsigned>& hostOrigin, const Vector<unsigned>& region, unsigned bufferRowPitch, unsigned bufferSlicePitch, HTMLCanvasElement* srcCanvas, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
     if (!isExtensionEnabled(context(), "WEBCL_html_image")) {
@@ -397,6 +402,7 @@ void WebCLCommandQueue::enqueueWriteBufferRect(WebCLBuffer* buffer, bool blockin
     void* hostPtr = data.data();
     enqueueWriteBufferRectBase(buffer, blockingWrite, bufferOrigin, hostOrigin, region, bufferRowPitch, bufferSlicePitch, 0, 0, hostPtr, canvasSize, events, event, es);
 }
+#endif
 
 void WebCLCommandQueue::enqueueWriteBufferRect(WebCLBuffer* buffer, bool blockingWrite, const Vector<unsigned>& bufferOrigin, const Vector<unsigned>& hostOrigin, const Vector<unsigned>& region, unsigned bufferRowPitch, unsigned bufferSlicePitch, HTMLImageElement* srcImage, const Vector<RefPtr<WebCLEvent>>& eventWaitlist, WebCLEvent* event, ExceptionState& es)
 {
@@ -464,6 +470,7 @@ void WebCLCommandQueue::enqueueReadBuffer(WebCLBuffer* mem, bool blockingRead, u
     enqueueReadBufferBase(mem, blockingRead, offset, bufferSize, ptr->baseAddress(), ptr->byteLength(), events, event, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 void WebCLCommandQueue::enqueueReadBuffer(WebCLBuffer* buffer, bool blockingRead, unsigned offset, unsigned numBytes, HTMLCanvasElement* dstCanvas, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
     if (!isExtensionEnabled(context(), "WEBCL_html_image")) {
@@ -479,6 +486,7 @@ void WebCLCommandQueue::enqueueReadBuffer(WebCLBuffer* buffer, bool blockingRead
     void* hostPtr = data.data();
     enqueueReadBufferBase(buffer, blockingRead, offset, numBytes, hostPtr, canvasSize, events, event, es);
 }
+#endif
 
 void WebCLCommandQueue::enqueueReadBufferRectBase(WebCLBuffer* mem, bool blockingRead, const Vector<unsigned>& bufferOrigin, const Vector<unsigned>& hostOrigin, const Vector<unsigned>& region, unsigned bufferRowPitch, unsigned bufferSlicePitch, unsigned hostRowPitch, unsigned hostSlicePitch, void* ptr, size_t ptrLength, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
@@ -545,6 +553,7 @@ void WebCLCommandQueue::enqueueReadBufferRect(WebCLBuffer* mem, bool blockingRea
     enqueueReadBufferRectBase(mem, blockingRead, bufferOrigin, hostOrigin, region, bufferRowPitch, bufferSlicePitch, hostRowPitch, hostSlicePitch, ptr->baseAddress(), ptr->byteLength(), events, event, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 void WebCLCommandQueue::enqueueReadBufferRect(WebCLBuffer* buffer, bool blockingRead, const Vector<unsigned>& bufferOrigin, const Vector<unsigned>& hostOrigin, const Vector<unsigned>& region, unsigned bufferRowPitch, unsigned bufferSlicePitch, HTMLCanvasElement* dstCanvas, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
     if (!isExtensionEnabled(context(), "WEBCL_html_image")) {
@@ -560,6 +569,7 @@ void WebCLCommandQueue::enqueueReadBufferRect(WebCLBuffer* buffer, bool blocking
     void* hostPtr = data.data();
     enqueueReadBufferRectBase(buffer, blockingRead, bufferOrigin, hostOrigin, region, bufferRowPitch, bufferSlicePitch, 0, 0, hostPtr, canvasSize, events, event, es);
 }
+#endif
 
 void WebCLCommandQueue::enqueueReadImageBase(WebCLImage* image, bool blockingRead, const Vector<unsigned>& origin, const Vector<unsigned>& region, unsigned hostRowPitch, void* ptr, size_t ptrLength, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
@@ -623,6 +633,7 @@ void WebCLCommandQueue::enqueueReadImage(WebCLImage* image, bool blockingRead, c
     enqueueReadImageBase(image, blockingRead, origin, region, hostRowPitch, ptr->baseAddress(), ptr->byteLength(), events, event, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 void WebCLCommandQueue::enqueueReadImage(WebCLImage* image, bool blockingRead, const Vector<unsigned>& origin, const Vector<unsigned>& region, HTMLCanvasElement* dstCanvas, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
     if (!isExtensionEnabled(context(), "WEBCL_html_image")) {
@@ -638,6 +649,7 @@ void WebCLCommandQueue::enqueueReadImage(WebCLImage* image, bool blockingRead, c
     void* hostPtr = data.data();
     enqueueReadImageBase(image, blockingRead, origin, region, 0, hostPtr, canvasSize, events, event, es);
 }
+#endif
 
 void WebCLCommandQueue::enqueueNDRangeKernel(WebCLKernel* kernel, unsigned dim, const Vector<double>& offsets, const Vector<double>& globalWorkSize, const Vector<double>& localWorkSize, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
@@ -832,6 +844,7 @@ void WebCLCommandQueue::enqueueWriteImage(WebCLImage* image, bool blockingWrite,
     enqueueWriteImageBase(image, blockingWrite, origin, region, 0, hostPtr, pixelSize, events, event, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 void WebCLCommandQueue::enqueueWriteImage(WebCLImage* image, bool blockingWrite, const Vector<unsigned>& origin, const Vector<unsigned>& region, HTMLCanvasElement* srcCanvas, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
     if (!isExtensionEnabled(context(), "WEBCL_html_image")) {
@@ -847,6 +860,7 @@ void WebCLCommandQueue::enqueueWriteImage(WebCLImage* image, bool blockingWrite,
     void* hostPtr = data.data();
     enqueueWriteImageBase(image, blockingWrite, origin, region, 0, hostPtr, canvasSize, events, event, es);
 }
+#endif
 
 void WebCLCommandQueue::enqueueWriteImage(WebCLImage* image, bool blockingWrite, const Vector<unsigned>& origin, const Vector<unsigned>& region, HTMLImageElement* srcImage, const Vector<RefPtr<WebCLEvent>>& events, WebCLEvent* event, ExceptionState& es)
 {
@@ -1257,12 +1271,14 @@ bool WebCLCommandQueue::isExtensionEnabled(WebCLContext* context, const String& 
 
 void WebCLCommandQueue::callbackProxy(cl_event event, cl_int type, void* userData)
 {
+#if !defined(DISABLE_CANVAS)
     if (!isMainThread()) {
         Platform::current()->mainThread()->postTask(FROM_HERE, bind(callbackProxyOnMainThread, event, type, userData));
         return;
     }
 
     callbackProxyOnMainThread(event, type, userData);
+#endif
 }
 
 void WebCLCommandQueue::callbackProxyOnMainThread(cl_event event, cl_int type, void* userData)

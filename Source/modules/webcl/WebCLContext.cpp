@@ -7,7 +7,9 @@
 
 #if ENABLE(WEBCL)
 #include "bindings/modules/v8/V8WebCLDevice.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLVideoElement.h"
 #include "core/html/ImageData.h"
@@ -337,6 +339,7 @@ PassRefPtr<WebCLBuffer> WebCLContext::createBuffer(unsigned memoryFlags, ImageDa
     return createBufferBase(memoryFlags, pixelSize, hostPtr, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 PassRefPtr<WebCLBuffer> WebCLContext::createBuffer(unsigned memoryFlags, HTMLCanvasElement* srcCanvas, ExceptionState& es)
 {
     if (!isExtensionEnabled("WEBCL_html_image")) {
@@ -352,6 +355,7 @@ PassRefPtr<WebCLBuffer> WebCLContext::createBuffer(unsigned memoryFlags, HTMLCan
     void* hostPtr = data.data();
     return createBufferBase(memoryFlags, canvasSize, hostPtr, es);
 }
+#endif
 
 PassRefPtr<WebCLBuffer> WebCLContext::createBuffer(unsigned memoryFlags, HTMLImageElement* srcImage, ExceptionState& es)
 {
@@ -452,6 +456,7 @@ PassRefPtr<WebCLImage> WebCLContext::createImage(unsigned memFlags, const WebCLI
     return createImage(memFlags, descriptor, nullptr, es);
 }
 
+#if !defined(DISABLE_CANVAS)
 PassRefPtr<WebCLImage> WebCLContext::createImage(unsigned flags, HTMLCanvasElement* srcCanvas, ExceptionState& es)
 {
     if (!isExtensionEnabled("WEBCL_html_image")) {
@@ -473,6 +478,7 @@ PassRefPtr<WebCLImage> WebCLContext::createImage(unsigned flags, HTMLCanvasEleme
     void* hostPtr = data.data();
     return createImage2DBase(flags, width, height, 0, CL_RGBA, CL_UNORM_INT8, hostPtr, es);
 }
+#endif
 
 PassRefPtr<WebCLImage> WebCLContext::createImage(unsigned flags, HTMLImageElement* srcImage, ExceptionState& es)
 {

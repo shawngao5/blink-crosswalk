@@ -940,6 +940,7 @@ bool AXNodeObject::canSetValueAttribute() const
     return !isReadOnly();
 }
 
+#if !defined(DISABLE_CANVAS)
 bool AXNodeObject::canvasHasFallbackContent() const
 {
     Node* node = this->node();
@@ -951,6 +952,7 @@ bool AXNodeObject::canvasHasFallbackContent() const
     // (e.g. just text nodes), it doesn't have fallback content.
     return ElementTraversal::firstChild(*node);
 }
+#endif
 
 bool AXNodeObject::exposesTitleUIElement() const
 {
@@ -1720,8 +1722,13 @@ void AXNodeObject::addChildren()
     m_haveChildren = true;
 
     // The only time we add children from the DOM tree to a node with a layoutObject is when it's a canvas.
+#if !defined(DISABLE_CANVAS)
     if (layoutObject() && !isHTMLCanvasElement(*m_node))
+#else
+    if (layoutObject())
+#endif
         return;
+
 
     for (Node& child : NodeTraversal::childrenOf(*m_node))
         addChild(axObjectCache()->getOrCreate(&child));

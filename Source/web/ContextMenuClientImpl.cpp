@@ -219,10 +219,14 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
     // all else.
     data.linkURL = r.absoluteLinkURL();
 
+#if !defined(DISABLE_CANVAS)
     if (isHTMLCanvasElement(r.innerNonSharedNode())) {
         data.mediaType = WebContextMenuData::MediaTypeCanvas;
         data.hasImageContents = true;
     } else if (!r.absoluteImageURL().isEmpty()) {
+#else
+    if (!r.absoluteImageURL().isEmpty()) {
+#endif
         data.srcURL = r.absoluteImageURL();
         data.mediaType = WebContextMenuData::MediaTypeImage;
         data.mediaFlags |= WebContextMenuData::MediaCanPrint;

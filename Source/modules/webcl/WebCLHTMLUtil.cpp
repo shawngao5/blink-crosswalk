@@ -7,7 +7,9 @@
 
 #if ENABLE(WEBCL)
 
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLVideoElement.h"
 #include "core/html/ImageData.h"
@@ -32,6 +34,7 @@ bool packImageData(Image* image, WebGLImageConversion::ImageHtmlDomSource domSou
     return WebGLImageConversion::packImageData(image, imagePixelData, GL_RGBA, GL_UNSIGNED_BYTE, false, alphaOp, sourceDataFormat, width, height, imageSourceUnpackAlignment, data);
 }
 
+#if !defined(DISABLE_CANVAS)
 bool WebCLHTMLUtil::extractDataFromCanvas(HTMLCanvasElement* canvas, Vector<uint8_t>& data, size_t& canvasSize, ExceptionState& es)
 {
     // Currently the data is read back from gpu to cpu, and uploaded from cpu to gpu
@@ -55,6 +58,7 @@ bool WebCLHTMLUtil::extractDataFromCanvas(HTMLCanvasElement* canvas, Vector<uint
 
     return true;
 }
+#endif
 
 bool WebCLHTMLUtil::extractDataFromImage(HTMLImageElement* image, Vector<uint8_t>& data, size_t& imageSize, ExceptionState& es)
 {
@@ -96,6 +100,7 @@ bool WebCLHTMLUtil::extractDataFromImageData(ImageData* srcPixels, void*& hostPt
 
 bool WebCLHTMLUtil::extractDataFromVideo(HTMLVideoElement* video, Vector<uint8_t>& data, size_t& videoSize, ExceptionState& es)
 {
+#if !defined(DISABLE_CANVAS)
     // Currently the data is read back from gpu to cpu, and uploaded from cpu to gpu
     // when OpenCL kernel funtion is assigned to run on GPU device.
     // TODO(junmin-zhu): should directly copy or share gpu memory in that case.
@@ -121,8 +126,12 @@ bool WebCLHTMLUtil::extractDataFromVideo(HTMLVideoElement* video, Vector<uint8_t
         return false;
     }
     return true;
+#else
+    return false;
+#endif
 }
 
+#if !defined(DISABLE_CANVAS)
 PassRefPtr<Image> WebCLHTMLUtil::videoFrameToImage(HTMLVideoElement* video)
 {
     if (!video || !video->clientWidth() || !video->clientHeight())
@@ -137,6 +146,7 @@ PassRefPtr<Image> WebCLHTMLUtil::videoFrameToImage(HTMLVideoElement* video)
     video->paintCurrentFrameInContext(imageBufferObject->context(), destRect);
     return imageBufferObject->copyImage();
 }
+#endif
 
 WebCLHTMLUtil::WebCLHTMLUtil(unsigned capacity)
     : m_generatedImageCache(capacity)

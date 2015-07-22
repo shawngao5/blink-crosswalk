@@ -44,10 +44,14 @@
 namespace blink {
 
 class Blob;
+#if !defined(DISABLE_CANVAS)
 class CanvasRenderingContext2D;
+#endif
 class EventTarget;
 class ExceptionState;
+#if !defined(DISABLE_CANVAS)
 class HTMLCanvasElement;
+#endif
 class HTMLImageElement;
 class HTMLVideoElement;
 class ImageBitmap;
@@ -62,10 +66,12 @@ public:
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, HTMLImageElement*, int sx, int sy, int sw, int sh, ExceptionState&);
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, HTMLVideoElement*, ExceptionState&);
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, HTMLVideoElement*, int sx, int sy, int sw, int sh, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, CanvasRenderingContext2D*, ExceptionState&);
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, CanvasRenderingContext2D*, int sx, int sy, int sw, int sh, ExceptionState&);
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, HTMLCanvasElement*, ExceptionState&);
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, HTMLCanvasElement*, int sx, int sy, int sw, int sh, ExceptionState&);
+#endif
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, Blob*, ExceptionState&);
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, Blob*, int sx, int sy, int sw, int sh, ExceptionState&);
     static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, ImageData*, ExceptionState&);

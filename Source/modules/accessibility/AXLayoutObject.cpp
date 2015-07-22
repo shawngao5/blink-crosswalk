@@ -295,9 +295,11 @@ AccessibilityRole AXLayoutObject::determineAccessibilityRole()
             return SVGRootRole;
         return ImageRole;
     }
+#if !defined(DISABLE_CANVAS)
     // Note: if JavaScript is disabled, the layoutObject won't be a LayoutHTMLCanvas.
     if (isHTMLCanvasElement(node) && m_layoutObject->isCanvas())
         return CanvasRole;
+#endif
 
     if (cssBox && cssBox->isLayoutView())
         return WebAreaRole;
@@ -2207,8 +2209,12 @@ void AXLayoutObject::addImageMapChildren()
 
 void AXLayoutObject::addCanvasChildren()
 {
+#if !defined(DISABLE_CANVAS)
     if (!isHTMLCanvasElement(node()))
         return;
+#else
+    return;
+#endif
 
     // If it's a canvas, it won't have laid out children, but it might have accessible fallback content.
     // Clear m_haveChildren because AXNodeObject::addChildren will expect it to be false.

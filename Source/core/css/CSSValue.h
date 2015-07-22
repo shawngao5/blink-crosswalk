@@ -52,14 +52,20 @@ public:
     bool isBaseValueList() const { return m_classType == ValueListClass; }
 
     bool isBorderImageSliceValue() const { return m_classType == BorderImageSliceClass; }
+#if !defined(DISABLE_CANVAS)
     bool isCanvasValue() const { return m_classType == CanvasClass; }
+#endif
     bool isCursorImageValue() const { return m_classType == CursorImageClass; }
     bool isCrossfadeValue() const { return m_classType == CrossfadeClass; }
     bool isFontFeatureValue() const { return m_classType == FontFeatureClass; }
     bool isFontValue() const { return m_classType == FontClass; }
     bool isFontFaceSrcValue() const { return m_classType == FontFaceSrcClass; }
     bool isFunctionValue() const { return m_classType == FunctionClass; }
+#if !defined(DISABLE_CANVAS)
     bool isImageGeneratorValue() const { return m_classType >= CanvasClass && m_classType <= RadialGradientClass; }
+#else
+    bool isImageGeneratorValue() const { return m_classType >= CrossfadeClass && m_classType <= RadialGradientClass; }
+#endif
     bool isGradientValue() const { return m_classType >= LinearGradientClass && m_classType <= RadialGradientClass; }
     bool isImageSetValue() const { return m_classType == ImageSetClass; }
     bool isImageValue() const { return m_classType == ImageClass; }
@@ -101,7 +107,9 @@ protected:
         CursorImageClass,
 
         // Image generator classes.
+#if !defined(DISABLE_CANVAS)
         CanvasClass,
+#endif
         CrossfadeClass,
         LinearGradientClass,
         RadialGradientClass,

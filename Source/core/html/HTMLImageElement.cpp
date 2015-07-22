@@ -36,11 +36,15 @@
 #include "core/fetch/ImageResource.h"
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLAnchorElement.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLImageFallbackHelper.h"
 #include "core/html/HTMLSourceElement.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/canvas/CanvasRenderingContext.h"
+#endif
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/html/parser/HTMLSrcsetParser.h"
 #include "core/inspector/ConsoleMessage.h"

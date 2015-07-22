@@ -129,7 +129,9 @@ protected:
     virtual bool canSetValueAttribute() const override;
 
     // Properties of static elements.
+#if !defined(DISABLE_CANVAS)
     virtual bool canvasHasFallbackContent() const override final;
+#endif
     virtual bool exposesTitleUIElement() const override;
     virtual int headingLevel() const override final;
     virtual unsigned hierarchicalLevel() const override final;

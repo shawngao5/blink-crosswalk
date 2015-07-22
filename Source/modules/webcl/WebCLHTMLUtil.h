@@ -12,7 +12,9 @@
 namespace blink {
 
 class ExceptionState;
+#if !defined(DISABLE_CANVAS)
 class HTMLCanvasElement;
+#endif
 class HTMLImageElement;
 class HTMLVideoElement;
 class ImageData;
@@ -20,12 +22,16 @@ class ImageData;
 class WebCLHTMLUtil {
 public:
     explicit WebCLHTMLUtil(unsigned capacity = 4);
+#if !defined(DISABLE_CANVAS)
     static bool extractDataFromCanvas(HTMLCanvasElement*, Vector<uint8_t>& data, size_t& canvasSize, ExceptionState&);
+#endif
     static bool extractDataFromImage(HTMLImageElement*, Vector<uint8_t>& data, size_t& canvasSize, ExceptionState&);
     static bool extractDataFromImageData(ImageData*, void*& hostPtr, size_t& pixelSize, ExceptionState&);
     bool extractDataFromVideo(HTMLVideoElement*, Vector<uint8_t>& data, size_t& videoSize, ExceptionState&);
 private:
+#if !defined(DISABLE_CANVAS)
     PassRefPtr<Image> videoFrameToImage(HTMLVideoElement*);
+#endif
 
     // Fixed-size cache of reusable image buffers for extractDataFromVideo calls.
     class ImageBufferCache {

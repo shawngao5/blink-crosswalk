@@ -5,13 +5,16 @@
 #include "config.h"
 #include "bindings/core/v8/WrapCanvasContext.h"
 
+#if !defined(DISABLE_CANVAS)
 #include "bindings/core/v8/V8CanvasRenderingContext2D.h"
 #include "bindings/core/v8/V8WebGLRenderingContext.h"
 #include "core/html/HTMLCanvasElement.h"
 #include "core/inspector/InspectorCanvasInstrumentation.h"
+#endif
 
 namespace blink {
 
+#if !defined(DISABLE_CANVAS)
 ScriptValue wrapCanvasContext(ScriptState* scriptState, HTMLCanvasElement* canvas, PassRefPtrWillBeRawPtr<CanvasRenderingContext2D> value)
 {
     v8::Handle<v8::Value> v8Result = toV8(value, scriptState->context()->Global(), scriptState->isolate());
@@ -37,5 +40,6 @@ ScriptValue wrapCanvasContext(ScriptState* scriptState, HTMLCanvasElement* canva
     }
     return context;
 }
+#endif
 
 } // namespace blink

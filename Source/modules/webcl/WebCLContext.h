@@ -19,7 +19,9 @@ namespace blink {
 
 class ExceptionState;
 class DOMArrayBufferView;
+#if !defined(DISABLE_CANVAS)
 class HTMLCanvasElement;
+#endif
 class HTMLImageElement;
 class HTMLVideoElement;
 class ImageBuffer;
@@ -54,12 +56,16 @@ public:
     PassRefPtr<WebCLBuffer> createBuffer(unsigned, unsigned, DOMArrayBufferView*, ExceptionState&);
     PassRefPtr<WebCLBuffer> createBuffer(unsigned, unsigned, ExceptionState&);
     PassRefPtr<WebCLBuffer> createBuffer(unsigned, ImageData*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     PassRefPtr<WebCLBuffer> createBuffer(unsigned, HTMLCanvasElement*, ExceptionState&);
+#endif
     PassRefPtr<WebCLBuffer> createBuffer(unsigned, HTMLImageElement*, ExceptionState&);
     PassRefPtr<WebCLImage> createImage(unsigned, const WebCLImageDescriptor&, DOMArrayBufferView*, ExceptionState&);
     PassRefPtr<WebCLImage> createImage(unsigned, const WebCLImageDescriptor&, ExceptionState&);
     PassRefPtr<WebCLImage> createImage(unsigned, ImageData*, ExceptionState&);
+#if !defined(DISABLE_CANVAS)
     PassRefPtr<WebCLImage> createImage(unsigned, HTMLCanvasElement*, ExceptionState&);
+#endif
     PassRefPtr<WebCLImage> createImage(unsigned, HTMLImageElement*, ExceptionState&);
     PassRefPtr<WebCLImage> createImage(unsigned, HTMLVideoElement*, ExceptionState&);
     Nullable<Vector<WebCLImageDescriptor>> getSupportedImageFormats(ExceptionState&);

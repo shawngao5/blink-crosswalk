@@ -63,7 +63,9 @@
 #include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLTextAreaElement.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/canvas/WebGLRenderingContext.h"
+#endif
 #include "core/html/forms/PopupMenuClient.h"
 #include "core/html/ime/InputMethodContext.h"
 #include "core/layout/LayoutPart.h"
@@ -3519,7 +3521,11 @@ void WebViewImpl::copyImageAt(const WebPoint& point)
         return;
 
     HitTestResult result = hitTestResultForViewportPos(point);
+#if !defined(DISABLE_CANVAS)
     if (!isHTMLCanvasElement(result.innerNonSharedNode()) && result.absoluteImageURL().isEmpty()) {
+#else
+    if (result.absoluteImageURL().isEmpty()) {
+#endif
         // There isn't actually an image at these coordinates.  Might be because
         // the window scrolled while the context menu was open or because the page
         // changed itself between when we thought there was an image here and when
@@ -3539,8 +3545,12 @@ void WebViewImpl::saveImageAt(const WebPoint& point)
         return;
 
     Node* node = hitTestResultForViewportPos(point).innerNonSharedNode();
+#if !defined(DISABLE_CANVAS)
     if (!node || !(isHTMLCanvasElement(*node) || isHTMLImageElement(*node)))
         return;
+#else
+    return;
+#endif
 
     String url = toElement(*node).imageSourceURL();
     if (!KURL(KURL(), url).protocolIsData())
