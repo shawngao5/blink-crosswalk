@@ -28,10 +28,14 @@
 #include "bindings/core/v8/BindingSecurity.h"
 #include "bindings/core/v8/V8Binding.h"
 #include "bindings/core/v8/V8DOMException.h"
+#if !defined(DISABLE_CANVAS)
 #include "bindings/modules/v8/V8WebCLException.h"
+#endif
 #include "core/dom/DOMException.h"
 #include "core/dom/ExceptionCode.h"
+#if !defined(DISABLE_CANVAS)
 #include "modules/webcl/WebCLException.h"
+#endif
 
 namespace blink {
 
@@ -166,6 +170,7 @@ v8::Handle<v8::Value> V8ThrowException::throwException(v8::Handle<v8::Value> exc
     return v8::Undefined(isolate);
 }
 
+#if !defined(DISABLE_CANVAS)
 v8::Handle<v8::Value> V8ThrowException::createWebCLException(int ec, const String& name, const String& message, const v8::Handle<v8::Object>& creationContext, v8::Isolate* isolate)
 {
     if (ec <= 0 || v8::V8::IsExecutionTerminating())
@@ -182,4 +187,5 @@ v8::Handle<v8::Value> V8ThrowException::createWebCLException(int ec, const Strin
 
     return exception;
 }
+#endif
 } // namespace blink

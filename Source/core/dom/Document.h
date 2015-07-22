@@ -74,8 +74,10 @@ class Attr;
 class CDATASection;
 class CSSStyleDeclaration;
 class CSSStyleSheet;
+#if !defined(DISABLE_CANVAS)
 class CanvasRenderingContext2D;
 class CanvasRenderingContext2DOrWebGLRenderingContext;
+#endif
 class Chrome;
 class Comment;
 class ConsoleMessage;
@@ -108,7 +110,9 @@ class FrameHost;
 class FrameRequestCallback;
 class FrameView;
 class HTMLAllCollection;
+#if !defined(DISABLE_CANVAS)
 class HTMLCanvasElement;
+#endif
 class HTMLCollection;
 class HTMLDialogElement;
 class HTMLElement;
@@ -852,9 +856,12 @@ public:
     void updateFocusAppearanceSoon(bool restorePreviousSelection);
     void cancelFocusAppearanceUpdate();
 
+    
+#if !defined(DISABLE_CANVAS)
     // Extension for manipulating canvas drawing contexts for use in CSS
     void getCSSCanvasContext(const String& type, const String& name, int width, int height, CanvasRenderingContext2DOrWebGLRenderingContext&);
     HTMLCanvasElement& getCSSCanvasElement(const String& name);
+#endif
 
     bool isDNSPrefetchEnabled() const { return m_isDNSPrefetchEnabled; }
     void parseDNSPrefetchControlHeader(const String&);
@@ -1314,7 +1321,9 @@ private:
     bool m_hasAnnotatedRegions;
     bool m_annotatedRegionsDirty;
 
+#if !defined(DISABLE_CANVAS)
     WillBeHeapHashMap<String, RefPtrWillBeMember<HTMLCanvasElement>> m_cssCanvasElements;
+#endif
 
     OwnPtr<SelectorQueryCache> m_selectorQueryCache;
 

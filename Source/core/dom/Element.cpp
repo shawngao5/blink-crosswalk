@@ -91,7 +91,9 @@
 #include "core/frame/UseCounter.h"
 #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/ClassList.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLDocument.h"
 #include "core/html/HTMLElement.h"
@@ -239,6 +241,7 @@ short Element::tabIndex() const
 
 bool Element::layoutObjectIsFocusable() const
 {
+#if !defined(DISABLE_CANVAS)
     // Elements in canvas fallback content are not rendered, but they are allowed to be
     // focusable as long as their canvas is displayed and visible.
     if (isInCanvasSubtree()) {
@@ -258,6 +261,7 @@ bool Element::layoutObjectIsFocusable() const
         // so in that case the childNeedsStyleRecalc check is invalid.
         ASSERT(!document().isActive() || !document().childNeedsStyleRecalc());
     }
+#endif
 
     // FIXME: Even if we are not visible, we might have a child that is visible.
     // Hyatt wants to fix that some day with a "has visible content" flag or the like.
@@ -1440,8 +1444,10 @@ Node::InsertionNotificationRequest Element::insertedInto(ContainerNode* insertio
     if (!nameValue.isNull())
         updateName(nullAtom, nameValue);
 
+#if !defined(DISABLE_CANVAS)
     if (parentElement() && parentElement()->isInCanvasSubtree())
         setIsInCanvasSubtree(true);
+#endif
 
     return InsertionDone;
 }
@@ -3485,7 +3491,11 @@ bool Element::supportsStyleSharing() const
     // Turn off style sharing for elements that can gain layers for reasons outside of the style system.
     // See comments in LayoutObject::setStyle().
     // FIXME: Why does gaining a layer from outside the style system require disabling sharing?
+#if !defined(DISABLE_CANVAS)
     if (isHTMLFrameElementBase(*this) || isHTMLPlugInElement(*this) || isHTMLCanvasElement(*this))
+#else
+    if (isHTMLFrameElementBase(*this) || isHTMLPlugInElement(*this))
+#endif
         return false;
     if (Fullscreen::isActiveFullScreenElement(*this))
         return false;

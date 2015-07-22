@@ -32,11 +32,15 @@
 #include "core/fetch/ImageResource.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/RemoteFrame.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLVideoElement.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/canvas/CanvasRenderingContext.h"
+#endif
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/FilterEffectRenderer.h"
 #include "core/layout/LayoutEmbeddedObject.h"
@@ -82,6 +86,7 @@ static IntRect contentsRect(const LayoutObject* renderer)
         pixelSnappedIntRect(toLayoutBox(renderer)->contentBoxRect());
 }
 
+#if !defined(DISABLE_CANVAS)
 static IntRect backgroundRect(const LayoutObject* renderer)
 {
     if (!renderer->isBox())
@@ -116,12 +121,14 @@ static inline bool isAcceleratedCanvas(const LayoutObject* renderer)
     }
     return false;
 }
+#endif
 
 static bool hasBoxDecorationsOrBackgroundImage(const ComputedStyle& style)
 {
     return style.hasBoxDecorations() || style.hasBackgroundImage();
 }
 
+#if !defined(DISABLE_CANVAS)
 static bool contentLayerSupportsDirectBackgroundComposition(const LayoutObject* renderer)
 {
     // No support for decorations - border, border-radius or outline.
@@ -136,6 +143,7 @@ static bool contentLayerSupportsDirectBackgroundComposition(const LayoutObject* 
     // Simple background that is contained within the contents rect.
     return contentsRect(renderer).contains(backgroundRect(renderer));
 }
+#endif
 
 static WebLayer* platformLayerForPlugin(LayoutObject* renderer)
 {
@@ -150,8 +158,12 @@ static WebLayer* platformLayerForPlugin(LayoutObject* renderer)
 
 static inline bool isAcceleratedContents(LayoutObject* renderer)
 {
+#if !defined(DISABLE_CANVAS)
     return isAcceleratedCanvas(renderer)
         || (renderer->isEmbeddedObject() && toLayoutEmbeddedObject(renderer)->requiresAcceleratedCompositing())
+#else
+    return (renderer->isEmbeddedObject() && toLayoutEmbeddedObject(renderer)->requiresAcceleratedCompositing())
+#endif
         || renderer->isVideo();
 }
 
@@ -313,6 +325,7 @@ void CompositedDeprecatedPaintLayerMapping::updateScrollBlocksOn(const ComputedS
 void CompositedDeprecatedPaintLayerMapping::updateContentsOpaque()
 {
     ASSERT(m_isMainFrameLayoutViewLayer || !m_backgroundLayer);
+#if !defined(DISABLE_CANVAS)
     if (isAcceleratedCanvas(layoutObject())) {
         // Determine whether the rendering context's external texture layer is opaque.
         CanvasRenderingContext* context = toHTMLCanvasElement(layoutObject()->node())->renderingContext();
@@ -326,9 +339,12 @@ void CompositedDeprecatedPaintLayerMapping::updateContentsOpaque()
         m_graphicsLayer->setContentsOpaque(false);
         m_backgroundLayer->setContentsOpaque(m_owningLayer.backgroundIsKnownToBeOpaqueInRect(compositedBounds()));
     } else {
+#endif
         // For non-root layers, background is always painted by the primary graphics layer.
         m_graphicsLayer->setContentsOpaque(m_owningLayer.backgroundIsKnownToBeOpaqueInRect(compositedBounds()));
+#if !defined(DISABLE_CANVAS)
     }
+#endif
 }
 
 void CompositedDeprecatedPaintLayerMapping::updateCompositedBounds()
@@ -528,11 +544,13 @@ bool CompositedDeprecatedPaintLayerMapping::updateGraphicsLayerConfiguration()
     } else if (renderer->isVideo()) {
         HTMLMediaElement* mediaElement = toHTMLMediaElement(renderer->node());
         m_graphicsLayer->setContentsToPlatformLayer(mediaElement->platformLayer());
+#if !defined(DISABLE_CANVAS)
     } else if (isAcceleratedCanvas(renderer)) {
         HTMLCanvasElement* canvas = toHTMLCanvasElement(renderer->node());
         if (CanvasRenderingContext* context = canvas->renderingContext())
             m_graphicsLayer->setContentsToPlatformLayer(context->platformLayer());
         layerConfigChanged = true;
+#endif
     }
     if (renderer->isLayoutPart())
         layerConfigChanged = DeprecatedPaintLayerCompositor::parentFrameContentLayers(toLayoutPart(renderer));
@@ -1204,6 +1222,7 @@ void CompositedDeprecatedPaintLayerMapping::updateDrawsContent()
         updateScrollingBlockSelection();
     }
 
+#if !defined(DISABLE_CANVAS)
     if (hasPaintedContent && isAcceleratedCanvas(layoutObject())) {
         CanvasRenderingContext* context = toHTMLCanvasElement(layoutObject()->node())->renderingContext();
         // Content layer may be null if context is lost.
@@ -1216,6 +1235,7 @@ void CompositedDeprecatedPaintLayerMapping::updateDrawsContent()
             contentLayer->setBackgroundColor(bgColor.rgb());
         }
     }
+#endif
 
     // FIXME: we could refine this to only allocate backings for one of these layers if possible.
     if (m_foregroundLayer)
@@ -1884,10 +1904,12 @@ void CompositedDeprecatedPaintLayerMapping::contentChanged(ContentChangeType cha
         return;
     }
 
+#if !defined(DISABLE_CANVAS)
     if (changeType == CanvasChanged && isAcceleratedCanvas(layoutObject())) {
         m_graphicsLayer->setContentsNeedsDisplay();
         return;
     }
+#endif
 }
 
 void CompositedDeprecatedPaintLayerMapping::updateImageContents()

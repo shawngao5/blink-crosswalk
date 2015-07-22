@@ -10,12 +10,14 @@
 
 namespace blink {
 
+#if !defined(DISABLE_CANVAS)
 class CanvasRenderingContext2D;
 class HTMLCanvasElement;
 class WebGLRenderingContext;
 
 ScriptValue wrapCanvasContext(ScriptState*, HTMLCanvasElement*, PassRefPtrWillBeRawPtr<CanvasRenderingContext2D> value);
 ScriptValue wrapCanvasContext(ScriptState*, HTMLCanvasElement*, PassRefPtrWillBeRawPtr<WebGLRenderingContext> value);
+#endif
 
 } // namespace blink
 

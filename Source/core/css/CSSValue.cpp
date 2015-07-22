@@ -29,7 +29,9 @@
 
 #include "core/css/CSSBorderImageSliceValue.h"
 #include "core/css/CSSCalculationValue.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/css/CSSCanvasValue.h"
+#endif
 #include "core/css/CSSContentDistributionValue.h"
 #include "core/css/CSSCrossfadeValue.h"
 #include "core/css/CSSCursorImageValue.h"
@@ -97,8 +99,10 @@ bool CSSValue::equals(const CSSValue& other) const
         switch (m_classType) {
         case BorderImageSliceClass:
             return compareCSSValues<CSSBorderImageSliceValue>(*this, other);
+#if !defined(DISABLE_CANVAS)
         case CanvasClass:
             return compareCSSValues<CSSCanvasValue>(*this, other);
+#endif
         case CursorImageClass:
             return compareCSSValues<CSSCursorImageValue>(*this, other);
         case FontClass:
@@ -166,8 +170,10 @@ String CSSValue::cssText() const
     switch (classType()) {
     case BorderImageSliceClass:
         return toCSSBorderImageSliceValue(this)->customCSSText();
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         return toCSSCanvasValue(this)->customCSSText();
+#endif
     case CursorImageClass:
         return toCSSCursorImageValue(this)->customCSSText();
     case FontClass:
@@ -233,9 +239,11 @@ void CSSValue::destroy()
     case BorderImageSliceClass:
         delete toCSSBorderImageSliceValue(this);
         return;
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         delete toCSSCanvasValue(this);
         return;
+#endif
     case CursorImageClass:
         delete toCSSCursorImageValue(this);
         return;
@@ -327,9 +335,11 @@ void CSSValue::finalizeGarbageCollectedObject()
     case BorderImageSliceClass:
         toCSSBorderImageSliceValue(this)->~CSSBorderImageSliceValue();
         return;
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         toCSSCanvasValue(this)->~CSSCanvasValue();
         return;
+#endif
     case CursorImageClass:
         toCSSCursorImageValue(this)->~CSSCursorImageValue();
         return;
@@ -421,9 +431,11 @@ DEFINE_TRACE(CSSValue)
     case BorderImageSliceClass:
         toCSSBorderImageSliceValue(this)->traceAfterDispatch(visitor);
         return;
+#if !defined(DISABLE_CANVAS)
     case CanvasClass:
         toCSSCanvasValue(this)->traceAfterDispatch(visitor);
         return;
+#endif
     case CursorImageClass:
         toCSSCursorImageValue(this)->traceAfterDispatch(visitor);
         return;

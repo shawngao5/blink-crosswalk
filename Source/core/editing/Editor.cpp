@@ -68,7 +68,9 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLTextAreaElement.h"
@@ -424,8 +426,10 @@ static PassRefPtr<Image> imageFromNode(const Node& node)
     if (!renderer)
         return nullptr;
 
+#if !defined(DISABLE_CANVAS)
     if (renderer->isCanvas())
         return toHTMLCanvasElement(node).copiedImage(FrontBuffer);
+#endif
 
     if (renderer->isImage()) {
         LayoutImage* layoutImage = toLayoutImage(renderer);
@@ -456,7 +460,11 @@ static void writeImageNodeToPasteboard(Pasteboard* pasteboard, Node* node, const
         urlString = toHTMLElement(node)->getAttribute(srcAttr);
     else if (isSVGImageElement(*node))
         urlString = toSVGElement(node)->getAttribute(XLinkNames::hrefAttr);
+#if !defined(DISABLE_CANVAS)
     else if (isHTMLEmbedElement(*node) || isHTMLObjectElement(*node) || isHTMLCanvasElement(*node))
+#else
+    else if (isHTMLEmbedElement(*node) || isHTMLObjectElement(*node))
+#endif
         urlString = toHTMLElement(node)->imageSourceURL();
     KURL url = urlString.isEmpty() ? KURL() : node->document().completeURL(stripLeadingAndTrailingHTMLSpaces(urlString));
 

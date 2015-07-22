@@ -32,7 +32,9 @@
 #include "core/StylePropertyShorthand.h"
 #include "core/css/CSSBasicShapes.h"
 #include "core/css/CSSBorderImage.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/css/CSSCanvasValue.h"
+#endif
 #include "core/css/CSSCrossfadeValue.h"
 #include "core/css/CSSCursorImageValue.h"
 #include "core/css/CSSFontFaceSrcValue.h"

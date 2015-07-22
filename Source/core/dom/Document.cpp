@@ -130,7 +130,9 @@
 #include "core/html/HTMLAllCollection.h"
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLBaseElement.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLDialogElement.h"
 #include "core/html/HTMLDocument.h"
@@ -147,10 +149,12 @@
 #include "core/html/HTMLTitleElement.h"
 #include "core/html/PluginDocument.h"
 #include "core/html/WindowNameCollection.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/canvas/CanvasContextCreationAttributes.h"
 #include "core/html/canvas/CanvasRenderingContext.h"
 #include "core/html/canvas/CanvasRenderingContext2D.h"
 #include "core/html/canvas/WebGLRenderingContext.h"
+#endif
 #include "core/html/forms/FormController.h"
 #include "core/html/imports/HTMLImportLoader.h"
 #include "core/html/imports/HTMLImportsController.h"
@@ -635,7 +639,9 @@ void Document::dispose()
 
     m_markers->clear();
 
+#if !defined(DISABLE_CANVAS)
     m_cssCanvasElements.clear();
+#endif
 
     // FIXME: consider using ActiveDOMObject.
     if (m_scriptedAnimationController)
@@ -4841,6 +4847,7 @@ void Document::detachRange(Range* range)
     m_ranges.remove(range);
 }
 
+#if !defined(DISABLE_CANVAS)
 void Document::getCSSCanvasContext(const String& type, const String& name, int width, int height, CanvasRenderingContext2DOrWebGLRenderingContext& returnValue)
 {
     HTMLCanvasElement& element = getCSSCanvasElement(name);
@@ -4857,6 +4864,7 @@ HTMLCanvasElement& Document::getCSSCanvasElement(const String& name)
     }
     return *element;
 }
+#endif
 
 void Document::initDNSPrefetch()
 {
@@ -5658,7 +5666,9 @@ DEFINE_TRACE(Document)
     visitor->trace(m_listsInvalidatedAtDocument);
     for (int i = 0; i < numNodeListInvalidationTypes; ++i)
         visitor->trace(m_nodeLists[i]);
+#if !defined(DISABLE_CANVAS)
     visitor->trace(m_cssCanvasElements);
+#endif
     visitor->trace(m_topLayerElements);
     visitor->trace(m_elemSheet);
     visitor->trace(m_nodeIterators);

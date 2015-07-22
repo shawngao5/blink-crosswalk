@@ -67,6 +67,7 @@ void ExceptionState::throwDOMException(const ExceptionCode& ec, const String& me
 
 void ExceptionState::throwWebCLException(const ExceptionCode& ec, const String& message)
 {
+#if !defined(DISABLE_CANVAS)
     ASSERT(ec);
     ASSERT(m_isolate);
 
@@ -74,6 +75,7 @@ void ExceptionState::throwWebCLException(const ExceptionCode& ec, const String& 
     m_message = message;
     String finalMessage = addExceptionContext("WEBCL_IMPL_" + message);
     setException(V8ThrowException::createWebCLException(ec, message, finalMessage, m_creationContext, m_isolate));
+#endif
 }
 
 void ExceptionState::throwSecurityError(const String& sanitizedMessage, const String& unsanitizedMessage)

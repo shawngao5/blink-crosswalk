@@ -30,7 +30,9 @@
 #include "core/StylePropertyShorthand.h"
 #include "core/css/CSSBasicShapes.h"
 #include "core/css/CSSBorderImage.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/css/CSSCanvasValue.h"
+#endif
 #include "core/css/CSSContentDistributionValue.h"
 #include "core/css/CSSCrossfadeValue.h"
 #include "core/css/CSSCursorImageValue.h"
@@ -7063,6 +7065,7 @@ bool CSSPropertyParser::parseCrossfade(CSSParserValueList* valueList, RefPtrWill
 
 bool CSSPropertyParser::parseCanvas(CSSParserValueList* valueList, RefPtrWillBeRawPtr<CSSValue>& canvas)
 {
+#if !defined(DISABLE_CANVAS)
     // Walk the arguments.
     CSSParserValueList* args = valueList->current()->function->args.get();
     if (!args || args->size() != 1)
@@ -7075,6 +7078,9 @@ bool CSSPropertyParser::parseCanvas(CSSParserValueList* valueList, RefPtrWillBeR
 
     canvas = CSSCanvasValue::create(value->string);
     return true;
+#else
+    return false;
+#endif
 }
 
 PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseImageSet(CSSParserValueList* valueList)

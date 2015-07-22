@@ -37,11 +37,15 @@
 #include "core/fileapi/Blob.h"
 #include "core/frame/ImageBitmap.h"
 #include "core/frame/LocalDOMWindow.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLVideoElement.h"
 #include "core/html/ImageData.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/canvas/CanvasRenderingContext2D.h"
+#endif
 #include "core/workers/WorkerGlobalScope.h"
 #include "platform/SharedBuffer.h"
 #include "platform/graphics/BitmapImage.h"
@@ -104,11 +108,13 @@ ScriptPromise ImageBitmapFactories::createImageBitmap(ScriptState* scriptState, 
         exceptionState.throwSecurityError("The source image contains image data from multiple origins.");
         return ScriptPromise();
     }
+#if !defined(DISABLE_CANVAS)
     Document* document = eventTarget.toDOMWindow()->document();
     if (!image->cachedImage()->passesAccessControlCheck(document->securityOrigin()) && document->securityOrigin()->taintsCanvas(image->src())) {
         exceptionState.throwSecurityError("Cross-origin access to the source image is denied.");
         return ScriptPromise();
     }
+#endif
     // FIXME: make ImageBitmap creation asynchronous crbug.com/258082
     return fulfillImageBitmap(scriptState, ImageBitmap::create(image, IntRect(sx, sy, sw, sh)));
 }
@@ -140,15 +146,18 @@ ScriptPromise ImageBitmapFactories::createImageBitmap(ScriptState* scriptState, 
         exceptionState.throwSecurityError("The source video contains image data from multiple origins.");
         return ScriptPromise();
     }
+#if !defined(DISABLE_CANVAS)
     if (!video->webMediaPlayer()->didPassCORSAccessCheck()
         && eventTarget.toDOMWindow()->document()->securityOrigin()->taintsCanvas(video->currentSrc())) {
         exceptionState.throwSecurityError("Cross-origin access to the source video is denied.");
         return ScriptPromise();
     }
+#endif
     // FIXME: make ImageBitmap creation asynchronous crbug.com/258082
     return fulfillImageBitmap(scriptState, ImageBitmap::create(video, IntRect(sx, sy, sw, sh)));
 }
 
+#if !defined(DISABLE_CANVAS)
 ScriptPromise ImageBitmapFactories::createImageBitmap(ScriptState* scriptState, EventTarget& eventTarget, CanvasRenderingContext2D* context, ExceptionState& exceptionState)
 {
     return createImageBitmap(scriptState, eventTarget, context->canvas(), exceptionState);
@@ -181,6 +190,7 @@ ScriptPromise ImageBitmapFactories::createImageBitmap(ScriptState* scriptState, 
     // FIXME: make ImageBitmap creation asynchronous crbug.com/258082
     return fulfillImageBitmap(scriptState, canvas->isPaintable() ? ImageBitmap::create(canvas, IntRect(sx, sy, sw, sh)) : nullptr);
 }
+#endif
 
 ScriptPromise ImageBitmapFactories::createImageBitmap(ScriptState* scriptState, EventTarget& eventTarget, Blob* blob, ExceptionState& exceptionState)
 {

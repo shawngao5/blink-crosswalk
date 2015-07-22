@@ -35,7 +35,9 @@
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLImageLoader.h"
+#if !defined(DISABLE_CANVAS)
 #include "core/html/canvas/CanvasRenderingContext.h"
+#endif
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutVideo.h"

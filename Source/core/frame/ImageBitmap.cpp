@@ -5,7 +5,9 @@
 #include "config.h"
 #include "core/frame/ImageBitmap.h"
 
+#if !defined(DISABLE_CANVAS)
 #include "core/html/HTMLCanvasElement.h"
+#endif
 #include "core/html/HTMLVideoElement.h"
 #include "core/html/ImageData.h"
 #include "platform/graphics/BitmapImage.h"
@@ -89,6 +91,7 @@ ImageBitmap::ImageBitmap(HTMLVideoElement* video, const IntRect& cropRect)
     m_bitmapRect = IntRect(IntPoint(std::max(0, -cropRect.x()), std::max(0, -cropRect.y())), srcRect.size());
 }
 
+#if !defined(DISABLE_CANVAS)
 ImageBitmap::ImageBitmap(HTMLCanvasElement* canvas, const IntRect& cropRect)
     : m_imageElement(nullptr)
     , m_cropRect(cropRect)
@@ -99,6 +102,7 @@ ImageBitmap::ImageBitmap(HTMLCanvasElement* canvas, const IntRect& cropRect)
     ASSERT(canvas->isPaintable());
     m_bitmap = cropImage(canvas->copiedImage(BackBuffer).get(), cropRect);
 }
+#endif
 
 ImageBitmap::ImageBitmap(ImageData* data, const IntRect& cropRect)
     : m_imageElement(nullptr)
@@ -165,11 +169,13 @@ PassRefPtrWillBeRawPtr<ImageBitmap> ImageBitmap::create(HTMLVideoElement* video,
     return adoptRefWillBeNoop(new ImageBitmap(video, normalizedCropRect));
 }
 
+#if !defined(DISABLE_CANVAS)
 PassRefPtrWillBeRawPtr<ImageBitmap> ImageBitmap::create(HTMLCanvasElement* canvas, const IntRect& cropRect)
 {
     IntRect normalizedCropRect = normalizeRect(cropRect);
     return adoptRefWillBeNoop(new ImageBitmap(canvas, normalizedCropRect));
 }
+#endif
 
 PassRefPtrWillBeRawPtr<ImageBitmap> ImageBitmap::create(ImageData* data, const IntRect& cropRect)
 {
